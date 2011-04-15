@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#
+# Moves the song played in Quodlibet to trash (or to $TRASH_DIR)
+#
+
+# only used if trash-put is NOT installed
+TRASH_DIR=~/.local/share/Trash/files/
+
+CURRENT_FILE=~/.quodlibet/current
+
+[ -r "$CURRENT_FILE" ] || exit 1
+
+SONG_FILE="$(grep filename "$CURRENT_FILE" | cut -d= -f2-)"
+
+[ -w "$SONG_FILE" ] || exit 2
+
+# check whether trash-put is installed
+if [ -s "$(which trash-put)" ] ; then
+    trash-put "$SONG_FILE"
+else
+    [ -w "$TRASH_DIR" ] || exit 1
+    zenity --warning --text "You should install trash-put (from 'trash-cli' package)."
+    mv -fv "$SONG_FILE" "$TRASH_DIR"
+fi
+
+if [ -f "$SONG_FILE" ]; then
+    exit 1
+else
+    quodlibet --next
+    exit 0
+fi
+
