@@ -1,0 +1,62 @@
+#!/bin/sh
+
+#
+# Removes old kernels on Fedora
+# The first part of this script is now obsolete. It can be done with:
+# $ package-cleanup --oldkernels --count=1
+# (package-cleanup is in yum-utils package)
+#
+
+#GRUB=/boot/grub/menu.lst
+GRUB=/boot/grub/grub.conf
+
+# Foolproof check
+[ -s "$(which rpm)" -a -s "$(which yum)" ] || exit 1
+
+# First, uninstall all old kernels
+current=$(uname -r)
+echo "Current kernel:"
+echo "kernel-"$current
+echo
+
+old=$(rpm -q kernel | grep -v $current)
+if [ -z "$old" ]; then
+    echo "No old kernel found."
+    exit 0
+fi
+
+echo "Old kernel found:"
+echo $old | tr " " "\n"
+echo
+
+echo "Uninstall them [y/N]:"
+read q
+
+if [ "$q" = "y" ]; then
+    sudo yum remove $old
+    if [ $? -ne 0 ]; then
+        exit $?
+    fi
+    echo "Cleanup done."
+else
+    exit 0
+fi
+
+
+# Then, remove the kernel version to get a more handsome Grub boot screen :)
+echo "Trim title [y/N]:"
+read q
+
+if [ "$q" = "y" ]; then
+    # Make a backup if something goes wrong
+    sudo cp $GRUB $GRUB.BAK || exit 1
+    sudo sed -i "s/^\(title Fedora\).*/\1/" $GRUB
+    sudo diff $GRUB $GRUB.BAK | tail -n +2
+
+    echo "Triming done."
+else
+    exit 0
+fi
+
+exit 0
+
