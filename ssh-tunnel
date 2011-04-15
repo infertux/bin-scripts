@@ -1,0 +1,67 @@
+#!/bin/sh
+
+#
+# Sets up a SSH tunnel to a given host:port in order to bypass some firewalls ;)
+#
+
+# Your proxy settings
+SSH_USER=root
+SSH_SERVER=8.8.8.8
+SSH_KEY=$HOME/.ssh/id_rsa
+
+
+if [ $UID -ne 0 ]; then
+    echo "R00T M3 PLZ!"
+    exit 1
+fi
+
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <host> <port>"
+    exit 1
+fi
+
+HOST=$1
+PORT=$2
+
+TUNNEL="ssh -vvv -NL :$PORT:localhost:$PORT $SSH_USER@$SSH_SERVER -i $SSH_KEY"
+
+# Remove old conflicting lines
+clean_hosts() {
+    cp -f /etc/hosts /etc/hosts.BAK
+    tmp=$(mktemp)
+    grep -v "^127\.0\.0\.1\s$HOST\s*$" /etc/hosts > $tmp
+    cp -f $tmp /etc/hosts
+    rm -f $tmp
+    cat /etc/hosts
+}
+
+clean_hosts
+
+# Start the tunnel
+$TUNNEL &
+
+# Wait for tunnel ready
+notready=1
+while [ $notready -ne 0 ]; do
+    sleep 1
+    netstat -laputen | grep ":$PORT" | grep ssh | grep LISTEN > /dev/null
+    notready=$?
+done
+
+# Add the magic line
+echo "127.0.0.1 $HOST" >> /etc/hosts
+
+cat /etc/hosts
+
+echo "Tunnel is up."
+echo "Press [ENTER] to close the tunnel."
+
+read
+
+echo "Closing SSH tunnel..."
+kill $(ps -lef | grep "$TUNNEL" | awk '{print $4}' | head -n -1)
+clean_hosts
+
+echo "Bye!"
+exit 0
+

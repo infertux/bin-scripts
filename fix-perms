@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# Sets the ugo permissions to 755 for directories and 644 for files recursively
+#
+
+if [ $# -ne 1 ]
+then
+    echo "Usage: $(basename $0) <dir-to-fix-perms>"
+    exit 1
+fi
+
+echo "Fixing permissions on directory '$1'..."
+
+find "$1" -type d -exec chmod 775 {} \;
+find "$1" -type f -exec chmod 664 {} \;
+
+exit 0
+
