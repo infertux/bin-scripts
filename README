@@ -1,6 +1,8 @@
 A collection of shell scripts I use on a semi-regular basis.
 
 
+dead-symlinks – Seeks and prints dead symlinks recursively
+
 fix-perms – Sets the ugo permissions to 755 for directories and 644 for files
 recursively
 

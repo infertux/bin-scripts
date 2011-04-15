@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# Seeks and prints dead symlinks recursively
+#
+
+if [ $# -ne 1 ]
+then
+    echo "Usage: $(basename $0) <directory>"
+    exit 1
+fi
+
+echo "Searching dead symlinks into '$1'..."
+
+sudo find "$1" -type l -not \
+    \( -path '/proc/*' -o -path '/dev/*' -o -path '/data/*' -prune \) | \
+    (while read FN ; do test -e "$FN" || ls -d "$FN"; done)
+
+exit 0
+
