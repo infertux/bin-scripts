@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# Translates parameters using Google Translate Ajax API
+#
+
+# Edit these two lines to set the languages to use by default
+FROM='en'
+TO='fr'
+
+if [ -z "$1" ]
+then
+    echo "Example: $0 'Hello World!'"
+    exit 1
+fi
+
+URL='http://ajax.googleapis.com/ajax/services/language/translate?v=1.0'
+STRING=$(echo "$@" | tr ' ' '+')
+RESPONSE=$(curl -s "$URL&langpair=$FROM|$TO&q=$STRING")
+
+echo "$RESPONSE" | cut -d: -f3 | cut -d'}' -f1 | sed 's/"/« /' | sed 's/"/ »/'
+
+exit 0
+
