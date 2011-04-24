@@ -10,6 +10,8 @@ recursively
 
 google-translate – Translates parameters using Google Translate Ajax API
 
+music-find-duplicates – Interactive MP3 duplicates cleaner
+
 quodlibet-del-current-song – Moves the song played in Quodlibet to trash (or to
 $TRASH_DIR)
 
