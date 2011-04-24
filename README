@@ -1,6 +1,8 @@
 A collection of shell scripts I use on a semi-regular basis.
 
 
+cp_p – cp command with a progress bar
+
 dead-symlinks – Seeks and prints dead symlinks recursively
 
 fix-perms – Sets the ugo permissions to 755 for directories and 644 for files
@@ -19,7 +21,7 @@ firewalls ;)
 
 All files in this repository are distributed under GPLv3, enjoy!
 
-    Copyright (C) 2011  Infertux
+    Copyright (C) 2011  Infertux <infertux@infertux.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
