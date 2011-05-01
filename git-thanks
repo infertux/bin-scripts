@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#
+# Displays the list of committers to a Git repository
+#
+
 # Usage:
 #
 # All commits on current branch, ever:
