@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Helps you to clean up your music directory
+#
+
+DIR=/data/Music/
+
+FIND="find $DIR -type f -regextype posix-egrep -not -iregex \
+    '.*\.(mp3|wma|ogg|mid|aac|mpc|xm|mod|v2m|it|s3m|ym|m3u|wav|sc68|ahx|sid|fc1[34])'"
+
+# Hey look, two ugly eval to factorize the code!
+eval $FIND | awk -F. '{print $NF}' | sort | uniq -ci | sort -nr
+eval "$FIND -exec file \"{}\" \; -exec rm -i \"{}\" \;"
+
