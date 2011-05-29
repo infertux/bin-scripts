@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#
+# Displays the current Git branch (with dirty* status) if any
+#
+
+function git_is_dirty {
+  [ "$(git status --porcelain 2>/dev/null)" ] && echo '*'
+}
+
+git branch --no-color 2>/dev/null | grep '^\* ' | sed -r "s/^\* (.*)$/\1$(git_is_dirty)/"
+
