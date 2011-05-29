@@ -8,6 +8,8 @@ dead-symlinks – Seeks and prints dead symlinks recursively
 fix-perms – Sets the ugo permissions to 755 for directories and 644 for files
 recursively
 
+git-get-branch – Displays the current Git branch (with dirty* status) if any
+
 git-thanks – Displays the list of committers to a Git repository
 
 google-translate – Translates parameters using Google Translate Ajax API
