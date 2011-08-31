@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#
+# Displays Git status of the repositories in the current directory
+#
+
+dir=$(pwd)
+
+for r in $(find $dir -maxdepth 1 -type d); do
+    [ -d "$r/.git" ] || continue
+    cd "$r"
+    pwd
+    git status -s
+    echo
+done
+
