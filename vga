@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+#
+# Turn on/off VGA output
+#
+
+case "$1" in
+    on) xrandr --output LVDS1 --mode 1024x600 --output VGA1 --mode 1280x1024 --right-of LVDS1;;
+    off) xrandr --output VGA1 --off;;
+    *) echo "vga on|off"
+esac
+

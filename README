@@ -28,6 +28,7 @@ remove-old-kernels – Removes old kernels on Fedora
 ssh-tunnel – Sets up a SSH tunnel to a given host:port in order to bypass some
 firewalls ;)
 
+vga – Turn on/off VGA output
 
 All files in this repository are distributed under GPLv3, enjoy!
 
