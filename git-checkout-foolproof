@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ "$1" = "-b" ]; then
+    current_branch=$(git symbolic-ref -q HEAD)
+    current_branch=${current_branch##refs/heads/}
+    current_branch=${current_branch:-(detached)}
+
+    if [ "$current_branch" != "master" ]; then
+        read -n 1 -p "You fool! Are you really sure you want to branch off of '${current_branch}'? "
+        echo
+
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "A terrible mistake has been prevented!"
+            exit 1
+        fi
+    fi
+fi
+
+git checkout "$@"
+
