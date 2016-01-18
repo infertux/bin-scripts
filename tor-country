@@ -1,0 +1,22 @@
+#!/bin/bash -e
+
+# usage: tor-country (fr|de|...) # select country
+#                                # no args to enable all countries
+
+COUNTRY=${1}
+set -u
+
+FILE=/etc/tor/torrc
+
+sudo sed -i "/ExitNodes /s/^ExitNodes /#ExitNodes /g" $FILE
+[ -n "$COUNTRY" ] && sudo sed -i "/ExitNodes {${COUNTRY}}/s/^#//g" $FILE
+
+[ -n "$COUNTRY" ] && {
+  pattern="ExitNodes {${COUNTRY}}"
+  grep -qE "^${pattern}$" $FILE || echo "$pattern" | sudo tee -a $FILE
+}
+
+grep "ExitNodes " $FILE
+
+$(dirname $0)/tor-restart
+

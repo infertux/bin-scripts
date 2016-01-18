@@ -1,8 +1,11 @@
+#!/bin/bash -u
+
 sudo systemctl restart tor
+
 while true; do
     output="$(sudo systemctl status tor -l)"
     echo "$output"
     echo "$output" | grep '100%' && break
-    sleep 2
+    sleep 3
 done
 
