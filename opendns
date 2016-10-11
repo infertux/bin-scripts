@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+set -o pipefail
+
+test $UID -eq 0
+/usr/bin/echo "nameserver 208.67.222.222" | /usr/bin/tee /etc/resolv.conf

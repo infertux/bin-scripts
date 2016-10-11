@@ -1,0 +1,11 @@
+#!/bin/bash -eu
+
+URL=$1
+METHOD=${2} # e.g. POST
+DATA="${3-}" # e.g. '{"data": {"type": "todos", "attributes": { "title": "Sample title", "description": "Sample description" }}}'
+
+set -x
+curl -H "Content-Type: application/vnd.api+json" \
+     -H "Accept: application/vnd.api+json" \
+     -X $METHOD -d "$DATA" -s $URL | \
+     json_pp | sed 's/   /    /g' | sed 's/^/        /'
