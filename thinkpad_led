@@ -1,0 +1,3 @@
+# status = on|off|blink
+
+echo 0 $status | sudo tee /proc/acpi/ibm/led
