@@ -1,10 +1,15 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 IN="eDP1"
-EXT="${1:-HDMI1}"
+CONNECTED_EXT=$(xrandr | grep -Eo "(.+) connected" | sed "s/ connected//" | tail -1)
+PREVIOUS_EXT=$(xrandr --listmonitors | tail -1 | awk '{print $NF}')
 
-if (xrandr | grep "$EXT disconnected"); then
-    xrandr --output $IN --auto --output $EXT --off
+if [ "$CONNECTED_EXT" = $IN ]; then
+    if [ "$PREVIOUS_EXT" != $IN ]; then
+        echo "Turning off ${PREVIOUS_EXT}"
+        xrandr --output $IN --auto --output "$PREVIOUS_EXT" --off
+    fi
 else
-    xrandr --output $IN --auto --primary --output $EXT --auto --above $IN
+    echo "Turning on ${CONNECTED_EXT}"
+    xrandr --output $IN --auto --primary --output "$CONNECTED_EXT" --auto --above $IN
 fi

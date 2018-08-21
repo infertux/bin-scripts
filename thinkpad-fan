@@ -1,0 +1,7 @@
+#/bin/bash -e
+
+case $1 in
+  [0-7]) echo level $1 | sudo tee /proc/acpi/ibm/fan ;;
+  auto|disengaged|full-speed) echo level $1 | sudo tee /proc/acpi/ibm/fan ;;
+  *) cat /proc/acpi/ibm/fan ;;
+esac

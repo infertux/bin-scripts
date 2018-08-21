@@ -1,0 +1,1 @@
+espeak -s 110 -g 5 -v Whisper "Protocol: Layer 09" --stdout | paplay
